@@ -58,14 +58,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		666C378724D0591700D76D65 /* Sources */ = {
+		666C378724D0591700D76D65 /* WaveMenu */ = {
 			isa = PBXGroup;
 			children = (
 				668C289024CED8590096D614 /* WaveMenu.swift */,
 				668C288F24CED8590096D614 /* MenuTitleCell.swift */,
 				668C288E24CED8590096D614 /* UIView+Extension.swift */,
 			);
-			path = Sources;
+			path = WaveMenu;
 			sourceTree = "<group>";
 		};
 		668C286A24CED7FC0096D614 = {
@@ -73,7 +73,7 @@
 			children = (
 				666C378524D0574500D76D65 /* README.md */,
 				666C378324D0573A00D76D65 /* Package.swift */,
-				668C287624CED7FC0096D614 /* WaveMenu */,
+				668C287624CED7FC0096D614 /* Sources */,
 				668C288124CED7FC0096D614 /* WaveMenuTests */,
 				668C287524CED7FC0096D614 /* Products */,
 			);
@@ -88,14 +88,14 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		668C287624CED7FC0096D614 /* WaveMenu */ = {
+		668C287624CED7FC0096D614 /* Sources */ = {
 			isa = PBXGroup;
 			children = (
-				666C378724D0591700D76D65 /* Sources */,
+				666C378724D0591700D76D65 /* WaveMenu */,
 				668C287724CED7FC0096D614 /* WaveMenu.h */,
 				668C287824CED7FC0096D614 /* Info.plist */,
 			);
-			path = WaveMenu;
+			path = Sources;
 			sourceTree = "<group>";
 		};
 		668C288124CED7FC0096D614 /* WaveMenuTests */ = {
