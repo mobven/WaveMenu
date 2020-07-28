@@ -15,7 +15,7 @@ public protocol WaveMenuDelegate: AnyObject{
     func didChangeWaveMenuItem(newIndex: Int)
 }
 
-class WaveMenu: UIView {
+public class WaveMenu: UIView {
     
     private let cellId = "cellId"
     private let caLayer: CAShapeLayer = CAShapeLayer()
@@ -26,7 +26,7 @@ class WaveMenu: UIView {
     
     open var curveWidth: Int = 24  // setting curve's width
     
-    var titleNames = ["Title 1", "Title 2", "Title 3"]{
+    public var titleNames = ["Title 1", "Title 2", "Title 3"]{
         didSet{
             self.collectionView.reloadData()
             self.initialSettings()
@@ -34,21 +34,21 @@ class WaveMenu: UIView {
     }
     
     
-    var titleFont: UIFont = UIFont.systemFont(ofSize: 14) {
+    public var titleFont: UIFont = UIFont.systemFont(ofSize: 14) {
         didSet{
             self.collectionView.reloadData()
             self.initialSettings()
         }
     }
     
-    var menuTitleTextColor: UIColor = .black{
+    public var menuTitleTextColor: UIColor = .black{
         didSet{
             self.collectionView.reloadData()
             self.initialSettings()
         }
     }
     
-    var menuTitleSelectedTextColor: UIColor = .white{
+    public var menuTitleSelectedTextColor: UIColor = .white{
         didSet{
             self.collectionView.reloadData()
             self.initialSettings()
@@ -108,7 +108,7 @@ class WaveMenu: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    override func draw(_ rect: CGRect) {
+    public override func draw(_ rect: CGRect) {
         super.draw(rect)
         resetCurve()
     }
@@ -243,11 +243,11 @@ class WaveMenu: UIView {
 // MARK: CollectionView Delegate - DataSource - FlowLayout
 extension WaveMenu: UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout{
     
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    public func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return titleNames.count
     }
     
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+    public func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath) as! WMTitleCell
         cell.titleLabel.font = self.titleFont
         cell.titleLabelTextColor = menuTitleTextColor
@@ -256,15 +256,15 @@ extension WaveMenu: UICollectionViewDataSource, UICollectionViewDelegate, UIColl
         return cell
     }
     
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+    public func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return CGSize(width: frame.width / CGFloat(titleNames.count), height: frame.height)
     }
     
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
+    public func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
         return 0
     }
     
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+    public func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         previousSelectedIndex = selectedCVIndex
         selectedCVIndex = indexPath.row
         if previousSelectedIndex != selectedCVIndex{ // avoiding reselection the same cell
