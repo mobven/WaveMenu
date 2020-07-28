@@ -26,6 +26,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		666C378224D054BD00D76D65 /* Package */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Package; path = ../Package; sourceTree = "<group>"; };
 		668C287424CED7FC0096D614 /* WaveMenu.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = WaveMenu.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		668C287724CED7FC0096D614 /* WaveMenu.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WaveMenu.h; sourceTree = "<group>"; };
 		668C287824CED7FC0096D614 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -59,6 +60,7 @@
 		668C286A24CED7FC0096D614 = {
 			isa = PBXGroup;
 			children = (
+				666C378224D054BD00D76D65 /* Package */,
 				668C287624CED7FC0096D614 /* WaveMenu */,
 				668C288124CED7FC0096D614 /* WaveMenuTests */,
 				668C287524CED7FC0096D614 /* Products */,
