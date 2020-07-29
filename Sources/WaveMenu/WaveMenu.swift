@@ -15,7 +15,7 @@ public protocol WaveMenuDelegate: AnyObject {
     func didChangeWaveMenuItem(newIndex: Int)
 }
 
-class WaveMenu: UIView {
+public class WaveMenu: UIView {
 
     private let cellId = "cellId"
     private let caLayer: CAShapeLayer = CAShapeLayer()
@@ -27,11 +27,11 @@ class WaveMenu: UIView {
     /// hold the collection view previous selected index for avoid reselection same cell
     private lazy var previousSelectedIndex: Int = 0
 
-    weak var menuDelegate: WaveMenuDelegate?
+    public weak var menuDelegate: WaveMenuDelegate?
 
     @IBInspectable open var curveWidth: Int = 24
 
-    var titleNames = ["Title 1", "Title 2", "Title 3"] {
+    public var titleNames = ["Title 1", "Title 2", "Title 3"] {
         didSet {
             wmCollectionViewInstance.titleNames = titleNames
             self.collectionView.reloadData()
@@ -39,7 +39,7 @@ class WaveMenu: UIView {
         }
     }
 
-    var titleFont: UIFont = UIFont.systemFont(ofSize: 14) {
+    public var titleFont: UIFont = UIFont.systemFont(ofSize: 14) {
         didSet {
             wmCollectionViewInstance.titleFont = titleFont
             self.collectionView.reloadData()
@@ -47,7 +47,7 @@ class WaveMenu: UIView {
         }
     }
 
-    @IBInspectable var menuTitleTextColor: UIColor = .black {
+    @IBInspectable public var menuTitleTextColor: UIColor = .black {
         didSet {
             wmCollectionViewInstance.menuTitleTextColor = menuTitleTextColor
             self.collectionView.reloadData()
@@ -55,7 +55,7 @@ class WaveMenu: UIView {
         }
     }
 
-    @IBInspectable var menuTitleSelectedTextColor: UIColor = .white {
+    @IBInspectable public var menuTitleSelectedTextColor: UIColor = .white {
         didSet {
             wmCollectionViewInstance.menuTitleSelectedTextColor = menuTitleSelectedTextColor
             self.collectionView.reloadData()
@@ -63,7 +63,7 @@ class WaveMenu: UIView {
         }
     }
 
-    @IBInspectable var curveFillColor: UIColor = .white {
+    @IBInspectable public var curveFillColor: UIColor = .white {
         didSet {
             self.initialSettings()
         }
@@ -139,7 +139,7 @@ class WaveMenu: UIView {
         let selectedIndexPath = IndexPath(item: 0, section: 0)
         collectionView.selectItem(at: selectedIndexPath, animated: false, scrollPosition: .bottom)
     }
-    override func draw(_ rect: CGRect) {
+    public override func draw(_ rect: CGRect) {
         super.draw(rect)
         resetCurve()
     }
