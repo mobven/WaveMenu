@@ -150,7 +150,7 @@ public class WaveMenu: UIView {
         let curveControllerValue = curveWidth / 2
 
         /// collectionView cell width
-        let cvCellWidth = curveContainerView.frame.width / CGFloat(titleNames.count)
+        let cvCellWidth = self.frame.width / CGFloat(titleNames.count)
 
         /// curve's initial x point
         let startXPoint = (Int(cvCellWidth) * selectedCVIndex) + (Int(cvCellWidth / 2) - curveControllerValue)
