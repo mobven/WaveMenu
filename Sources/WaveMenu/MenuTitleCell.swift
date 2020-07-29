@@ -10,7 +10,9 @@ import UIKit
 
 class WMTitleCell: UICollectionViewCell {
 
+    /// titleLabel deselected text color
     var titleLabelTextColor: UIColor = .black
+    /// titleLabel selected text color
     var titleLabelSelectedTextColor: UIColor = .white
 
     // MARK: Components
@@ -30,32 +32,35 @@ class WMTitleCell: UICollectionViewCell {
 
     override public func draw(_ rect: CGRect) {
         super.draw(rect)
-        self.setupViews()
+        self.initializeViews()
     }
 
-    // MARK: Selecting cells
+    // MARK: cell selection changed
     override var isSelected: Bool {
         didSet {
             titleLabel.textColor = isSelected ? titleLabelSelectedTextColor : titleLabelTextColor
-            _ = isSelected ? animateSelectedTitle() : setInitialSelectedTitle()
+            _ = isSelected ? setSelectedTitle() : setDeselectedTitle()
         }
     }
 
+    /// set title text and initial selection for title
     func initViews(title: String) {
         self.titleLabel.text = title
         titleLabel.textColor = isSelected ? titleLabelSelectedTextColor : titleLabelTextColor
-        _ = isSelected ? animateSelectedTitle() : setInitialSelectedTitle()
+        _ = isSelected ? setSelectedTitle() : setDeselectedTitle()
     }
 
-    func setInitialSelectedTitle() {
+    /// Moves the deselected title middle animatically
+    func setDeselectedTitle() {
         titleLabel.removeFromSuperview()
         UIView.animate(withDuration: 0.2, delay: 0.1, options: .curveEaseIn, animations: { () -> Void in
-            self.setupViews()
+            self.initializeViews()
             self.layoutIfNeeded()
         }, completion: nil)
     }
 
-    func animateSelectedTitle() {
+    /// Moves the selected title top animatically
+    func setSelectedTitle() {
         addSubview(titleLabel)
         UIView.animate(withDuration: 0.2, delay: 0.1, options: .curveEaseIn, animations: { () -> Void in
             self.addConstraintsWithFormat("V:|-3-[v0(20)]", views: self.titleLabel)
@@ -63,7 +68,8 @@ class WMTitleCell: UICollectionViewCell {
         }, completion: nil)
     }
 
-     func setupViews() {
+    /// This method adds titleLabel to cell
+     func initializeViews() {
         addSubview(titleLabel)
         addConstraintsWithFormat("H:[v0]", views: titleLabel)
         addConstraintsWithFormat("V:[v0(20)]-20-|", views: titleLabel)

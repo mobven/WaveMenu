@@ -20,10 +20,14 @@ class WaveMenuCollectinViewController: NSObject, UICollectionViewDataSource, UIC
     lazy var selectedCVIndex: Int = 0
     /// hold the collection view previous selected index for avoid reselection same cell
     lazy var previousSelectedIndex: Int = 0
+
     lazy var titleFont: UIFont = UIFont.systemFont(ofSize: 14)
     lazy var menuTitleTextColor: UIColor = .black
     lazy var menuTitleSelectedTextColor: UIColor = .white
+
     /// callback to return selectedCVIndex and previousSelectedIndex
+    /// - parameter selectedIndex: collection view selected index.
+    /// - parameter previousSelectedIndex: ollection view previous selected index.
     typealias CurveListener = (Int, Int) -> Void
     var curveListener: CurveListener?
 
@@ -60,7 +64,7 @@ class WaveMenuCollectinViewController: NSObject, UICollectionViewDataSource, UIC
         previousSelectedIndex = selectedCVIndex
         selectedCVIndex = indexPath.row
 
-        /// avoiding reselection the same cell
+        // avoiding reselection the same cell
         if previousSelectedIndex != selectedCVIndex, curveListener != nil {
             self.curveListener!(selectedCVIndex, previousSelectedIndex)
         }
