@@ -22,7 +22,16 @@ https://github.com/mobven/WaveMenu.git
 
 ## Usage
 
-WaveMenu can initialize from storyboard or programmatically. WaveMenu gives an index of selected title attribute via `WaveMenuDelegate`, for doing this, `menuDelegate` has to set.
+WaveMenu can initialize from storyboard or programmatically. WaveMenu gives an index of selected title attribute via `WaveMenuDelegate`, for doing this, `menuDelegate` has to set. Do not forget to set WaveMenu view `backgroundColor` attribute.
+
+### Supported Attributes
+
+- titleNames                  -> Displayed menu items.          (String Array)
+- curveWidth                  -> Curve's bottom width.          (Int)
+- titleFont                   -> Menu item's font.              (UIFont)
+- menuTitleTextColor          -> Menu item text color.          (UIColor)
+- menuTitleSelectedTextColor  -> Selected menu item text color. (UIColor)
+- curveFillColor              -> Curve's fill color             (UIColor)
 
 ### Programmatically Initialize
 
