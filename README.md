@@ -1,6 +1,6 @@
-[![SwiftPM compatible](https://img.shields.io/badge/SwiftPM-compatible-brightgreen.svg)](https://swift.org/package-manager/)
-
 WaveMenu is an animated, custom menu view.  
+
+[![SwiftPM compatible](https://img.shields.io/badge/SwiftPM-compatible-brightgreen.svg)](https://swift.org/package-manager/)
 
 ## Demo
 <p align="center">
