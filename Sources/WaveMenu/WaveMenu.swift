@@ -80,6 +80,14 @@ public class WaveMenu: UIView {
             self.resetViews()
         }
     }
+    
+    /// Curve dotView color. Initial value: .red
+    @IBInspectable public var curveDotColor: UIColor = .red {
+        didSet {
+            dotView.backgroundColor = curveDotColor
+            self.resetViews()
+        }
+    }
 
     /// This method reset collectionView and curve.
     private func resetViews() {
@@ -89,8 +97,6 @@ public class WaveMenu: UIView {
         // resetting curve
         self.setCurve()
         self.clipsToBounds = true
-        // set dotView backgroundColor
-        dotView.backgroundColor = self.backgroundColor
     }
 
     // MARK: UI Componenets
