@@ -9,68 +9,76 @@
 import UIKit
 
 class WMTitleCell: UICollectionViewCell {
-    
+
+    /// titleLabel deselected text color
     var titleLabelTextColor: UIColor = .black
+    /// titleLabel selected text color
     var titleLabelSelectedTextColor: UIColor = .white
-    
+
     // MARK: Components
     let titleLabel: UILabel = {
         let label = UILabel()
         return label
     }()
-    
+
     // MARK: Initializers
     override init(frame: CGRect) {
         super.init(frame: frame)
     }
-    
+
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+
     override public func draw(_ rect: CGRect) {
         super.draw(rect)
-        self.setupViews()
+        self.initializeViews()
     }
 
-    // MARK: Selecting cells
+    // MARK: cell selection changed
     override var isSelected: Bool {
         didSet {
             titleLabel.textColor = isSelected ? titleLabelSelectedTextColor : titleLabelTextColor
-            _ = isSelected ? animateSelectedTitle() : setInitialSelectedTitle()
+            _ = isSelected ? setSelectedTitle() : setDeselectedTitle()
         }
     }
-    
-    func initViews(title: String){
+
+    /// set title text and initial selection for title
+    func initViews(title: String) {
         self.titleLabel.text = title
         titleLabel.textColor = isSelected ? titleLabelSelectedTextColor : titleLabelTextColor
-        _ = isSelected ? animateSelectedTitle() : setInitialSelectedTitle()
+        _ = isSelected ? setSelectedTitle() : setDeselectedTitle()
     }
-    
-    func setInitialSelectedTitle(){
+
+    /// Moves the deselected title to middle animatically
+    private func setDeselectedTitle() {
         titleLabel.removeFromSuperview()
-        UIView.animate(withDuration: 0.2, delay: 0.1, options: .curveEaseIn, animations: { () -> () in
-            self.setupViews()
+        UIView.animate(withDuration: 0.2, delay: 0.1, options: .curveEaseIn, animations: { () -> Void in
+            self.initializeViews()
             self.layoutIfNeeded()
         }, completion: nil)
     }
-    
-    func animateSelectedTitle(){
+
+    /// Moves the selected title to top animatically
+    private func setSelectedTitle() {
         addSubview(titleLabel)
-        UIView.animate(withDuration: 0.2, delay: 0.1, options: .curveEaseIn, animations: { () -> () in
+        UIView.animate(withDuration: 0.2, delay: 0.1, options: .curveEaseIn, animations: { () -> Void in
             self.addConstraintsWithFormat("V:|-3-[v0(20)]", views: self.titleLabel)
             self.layoutIfNeeded()
         }, completion: nil)
     }
-    
-     func setupViews() {
+
+    /// This method adds titleLabel to cell
+     private func initializeViews() {
         addSubview(titleLabel)
         addConstraintsWithFormat("H:[v0]", views: titleLabel)
         addConstraintsWithFormat("V:[v0(20)]-20-|", views: titleLabel)
-        addConstraint(NSLayoutConstraint(item: titleLabel, attribute: .centerX, relatedBy: .equal, toItem: self, attribute: .centerX, multiplier: 1, constant: 0))
+        addConstraint(NSLayoutConstraint(item: titleLabel,
+                                         attribute: .centerX,
+                                         relatedBy: .equal,
+                                         toItem: self,
+                                         attribute: .centerX,
+                                         multiplier: 1,
+                                         constant: 0))
     }
 }
-
-
-
-

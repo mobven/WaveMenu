@@ -7,12 +7,15 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		666C379124D18F7C00D76D65 /* WaveMenuCollectinViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 666C379024D18F7C00D76D65 /* WaveMenuCollectinViewController.swift */; };
 		668C287E24CED7FC0096D614 /* WaveMenu.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 668C287424CED7FC0096D614 /* WaveMenu.framework */; };
 		668C288324CED7FC0096D614 /* WaveMenuTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 668C288224CED7FC0096D614 /* WaveMenuTests.swift */; };
 		668C288524CED7FC0096D614 /* WaveMenu.h in Headers */ = {isa = PBXBuildFile; fileRef = 668C287724CED7FC0096D614 /* WaveMenu.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		668C289224CED8590096D614 /* UIView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 668C288E24CED8590096D614 /* UIView+Extension.swift */; };
 		668C289324CED8590096D614 /* MenuTitleCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 668C288F24CED8590096D614 /* MenuTitleCell.swift */; };
 		668C289424CED8590096D614 /* WaveMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 668C289024CED8590096D614 /* WaveMenu.swift */; };
+		66AD395824D2B154007932D0 /* waveMenu.gif in Resources */ = {isa = PBXBuildFile; fileRef = 66AD395724D2B154007932D0 /* waveMenu.gif */; };
+		66AD395A24D2BB74007932D0 /* storyboard_init.png in Resources */ = {isa = PBXBuildFile; fileRef = 66AD395924D2BB74007932D0 /* storyboard_init.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -26,7 +29,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		666C378224D054BD00D76D65 /* Package */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Package; path = ../Package; sourceTree = "<group>"; };
+		666C378324D0573A00D76D65 /* Package.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Package.swift; sourceTree = "<group>"; };
+		666C378524D0574500D76D65 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		666C379024D18F7C00D76D65 /* WaveMenuCollectinViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaveMenuCollectinViewController.swift; sourceTree = "<group>"; };
 		668C287424CED7FC0096D614 /* WaveMenu.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = WaveMenu.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		668C287724CED7FC0096D614 /* WaveMenu.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WaveMenu.h; sourceTree = "<group>"; };
 		668C287824CED7FC0096D614 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -36,6 +41,8 @@
 		668C288E24CED8590096D614 /* UIView+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIView+Extension.swift"; sourceTree = "<group>"; };
 		668C288F24CED8590096D614 /* MenuTitleCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuTitleCell.swift; sourceTree = "<group>"; };
 		668C289024CED8590096D614 /* WaveMenu.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WaveMenu.swift; sourceTree = "<group>"; };
+		66AD395724D2B154007932D0 /* waveMenu.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = waveMenu.gif; sourceTree = "<group>"; };
+		66AD395924D2BB74007932D0 /* storyboard_init.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = storyboard_init.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -57,11 +64,34 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		666C378724D0591700D76D65 /* WaveMenu */ = {
+			isa = PBXGroup;
+			children = (
+				668C289024CED8590096D614 /* WaveMenu.swift */,
+				666C379024D18F7C00D76D65 /* WaveMenuCollectinViewController.swift */,
+				668C288F24CED8590096D614 /* MenuTitleCell.swift */,
+				668C288E24CED8590096D614 /* UIView+Extension.swift */,
+			);
+			path = WaveMenu;
+			sourceTree = "<group>";
+		};
+		666C378F24D18F3D00D76D65 /* WaveMenu */ = {
+			isa = PBXGroup;
+			children = (
+				668C287724CED7FC0096D614 /* WaveMenu.h */,
+				668C287824CED7FC0096D614 /* Info.plist */,
+			);
+			path = WaveMenu;
+			sourceTree = "<group>";
+		};
 		668C286A24CED7FC0096D614 = {
 			isa = PBXGroup;
 			children = (
-				666C378224D054BD00D76D65 /* Package */,
-				668C287624CED7FC0096D614 /* WaveMenu */,
+				66AD395624D2B0BD007932D0 /* Docs */,
+				666C378524D0574500D76D65 /* README.md */,
+				666C378324D0573A00D76D65 /* Package.swift */,
+				666C378F24D18F3D00D76D65 /* WaveMenu */,
+				668C287624CED7FC0096D614 /* Sources */,
 				668C288124CED7FC0096D614 /* WaveMenuTests */,
 				668C287524CED7FC0096D614 /* Products */,
 			);
@@ -76,16 +106,12 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		668C287624CED7FC0096D614 /* WaveMenu */ = {
+		668C287624CED7FC0096D614 /* Sources */ = {
 			isa = PBXGroup;
 			children = (
-				668C289024CED8590096D614 /* WaveMenu.swift */,
-				668C288F24CED8590096D614 /* MenuTitleCell.swift */,
-				668C288E24CED8590096D614 /* UIView+Extension.swift */,
-				668C287724CED7FC0096D614 /* WaveMenu.h */,
-				668C287824CED7FC0096D614 /* Info.plist */,
+				666C378724D0591700D76D65 /* WaveMenu */,
 			);
-			path = WaveMenu;
+			path = Sources;
 			sourceTree = "<group>";
 		};
 		668C288124CED7FC0096D614 /* WaveMenuTests */ = {
@@ -95,6 +121,15 @@
 				668C288424CED7FC0096D614 /* Info.plist */,
 			);
 			path = WaveMenuTests;
+			sourceTree = "<group>";
+		};
+		66AD395624D2B0BD007932D0 /* Docs */ = {
+			isa = PBXGroup;
+			children = (
+				66AD395924D2BB74007932D0 /* storyboard_init.png */,
+				66AD395724D2B154007932D0 /* waveMenu.gif */,
+			);
+			path = Docs;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -119,6 +154,7 @@
 				668C287024CED7FC0096D614 /* Sources */,
 				668C287124CED7FC0096D614 /* Frameworks */,
 				668C287224CED7FC0096D614 /* Resources */,
+				666C378E24D18ECB00D76D65 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -190,6 +226,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				66AD395A24D2BB74007932D0 /* storyboard_init.png in Resources */,
+				66AD395824D2B154007932D0 /* waveMenu.gif in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -202,11 +240,32 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		666C378E24D18ECB00D76D65 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\nif which swiftlint >/dev/null; then\n  swiftlint\nelse\n  echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n";
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		668C287024CED7FC0096D614 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				666C379124D18F7C00D76D65 /* WaveMenuCollectinViewController.swift in Sources */,
 				668C289224CED8590096D614 /* UIView+Extension.swift in Sources */,
 				668C289424CED8590096D614 /* WaveMenu.swift in Sources */,
 				668C289324CED8590096D614 /* MenuTitleCell.swift in Sources */,
@@ -367,6 +426,7 @@
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				INFOPLIST_FILE = WaveMenu/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -394,6 +454,7 @@
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				INFOPLIST_FILE = WaveMenu/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
