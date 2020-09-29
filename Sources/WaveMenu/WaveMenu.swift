@@ -35,8 +35,8 @@ public class WaveMenu: UIView {
     ///
     public weak var menuDelegate: WaveMenuDelegate?
 
-    /// curve's bottom width. Initially 48
-    @IBInspectable open var curveWidth: Int = 48
+    /// curve's bottom width. Initially 72
+    @IBInspectable open var curveWidth: Int = 72
 
     /// WaveMenu titles. Initial value: ["Title 1", "Title 2", "Title 3"]
     public var titleNames = ["Title 1", "Title 2", "Title 3"] {
@@ -80,7 +80,7 @@ public class WaveMenu: UIView {
             self.resetViews()
         }
     }
-    
+
     /// Curve dotView color. Initial value: .red
     @IBInspectable public var curveDotColor: UIColor = .red {
         didSet {
@@ -95,7 +95,8 @@ public class WaveMenu: UIView {
         let selectedIndexPath = IndexPath(item: 0, section: 0)
         self.collectionView.selectItem(at: selectedIndexPath, animated: false, scrollPosition: .bottom)
         // resetting curve
-        self.setCurve()
+        self.setCurve(firstCall: false)
+        bottomView.backgroundColor = curveFillColor
         self.clipsToBounds = true
     }
 
@@ -111,6 +112,12 @@ public class WaveMenu: UIView {
 
     /// Contains curve. Starting from waveMenu's leading to trailing and 20 pt. heights.
     private lazy var curveContainerView: UIView = {
+        let view = UIView()
+        return view
+    }()
+
+    /// BottomView for transforming dotView
+    private lazy var bottomView: UIView = {
         let view = UIView()
         return view
     }()
@@ -133,20 +140,23 @@ public class WaveMenu: UIView {
         initializeViews()
     }
 
-    ///  This method adds collectionView and curveContainerView to the waveMenu.
+    ///  This method adds collectionView, bottomView and curveContainerView to the waveMenu.
     ///  Besides, send needed datas to WaveMenuCollectinViewController and
     ///  manage callback from WaveMenuCollectinViewController.
     private func initializeViews() {
         collectionView.register(WMTitleCell.self, forCellWithReuseIdentifier: cellId)
 
         addSubview(curveContainerView)
+        addSubview(bottomView)
         addSubview(collectionView)
 
         // Collection view and curveContainer constraints
         addConstraintsWithFormat("H:|[v0]|", views: collectionView)
         addConstraintsWithFormat("H:|[v0]|", views: curveContainerView)
-        addConstraintsWithFormat("V:|[v0]|", views: collectionView)
-        addConstraintsWithFormat("V:[v0(20)]|", views: curveContainerView)
+        addConstraintsWithFormat("H:|[v0]|", views: bottomView)
+        addConstraintsWithFormat("V:|[v0]-6-|", views: collectionView)
+        addConstraintsWithFormat("V:[v0(20)]-6-|", views: curveContainerView)
+        addConstraintsWithFormat("V:[v0(6)]|", views: bottomView)
 
         wmCollectionViewInstance.cellId = cellId
         wmCollectionViewInstance.selectedCVIndex = selectedCVIndex
@@ -166,11 +176,11 @@ public class WaveMenu: UIView {
 
     public override func draw(_ rect: CGRect) {
         super.draw(rect)
-        setCurve()
+        setCurve(firstCall: true)
     }
 
     /// Bezire curve settings
-    private func setCurve() {
+    private func setCurve(firstCall: Bool) {
 
         let curveControllerValue = curveWidth / 2
 
@@ -211,32 +221,81 @@ public class WaveMenu: UIView {
         caLayer.path = bezierPath.cgPath
         caLayer.fillColor = curveFillColor.cgColor
 
-        self.addShakeAnimation(to: caLayer)
-
         // adiing curve to the layer of curveContainerView
         self.curveContainerView.layer.addSublayer(self.caLayer)
-
-        self.addDotView(to: middlePoint)
-    }
-
-    /// This method adds shake animation to layer
-    private func addShakeAnimation(to layer: CAShapeLayer) {
-        DispatchQueue.main.async {
-            let animation = CAKeyframeAnimation()
-            animation.keyPath = "position.x"
-            animation.values = [0, -4, 4, -3, 3, 0 ]
-            animation.keyTimes = [0, 0.17, 0.34, 0.51, 0.68, 0.85, 1]
-            animation.duration = 0.8
-            animation.isAdditive = true
-            self.caLayer.add(animation, forKey: "shake")
+        if firstCall {
+            self.addDotView(to: middlePoint)
         }
     }
 
-    /// This method animatedly hides curveContainerView and after completed show new curve
-    private func hideCurveContainerView() {
-        hideDotView()
+    private func transformToBottom(to middle: CGPoint,
+                                   cellWidth: CGFloat,
+                                   dotLeftPadding: CGFloat,
+                                   dotRightPadding: CGFloat,
+                                   curveControllerValue: Int) {
         DispatchQueue.main.async {
-            UIView.animate(withDuration: 0.15, delay: 0, options: .curveLinear, animations: {  [weak self] in
+            UIView.animate(withDuration: 0.15, delay: 0, options: .curveLinear, animations: { () -> Void in
+                if self.previousSelectedIndex > self.selectedCVIndex {
+                    self.dotView.center = CGPoint(x: (CGFloat(self.previousSelectedIndex) * cellWidth) + dotLeftPadding,
+                                                  y: middle.y + self.bounds.height - 3)
+                } else {
+                    self.dotView.center = CGPoint(x:
+                                                    (CGFloat(self.previousSelectedIndex) * cellWidth) + dotRightPadding,
+                                                  y: middle.y + self.bounds.height - 3)
+                }
+            }, completion: { [weak self] _ in
+                self?.transformToNewCell(middle, xPoint: CGFloat((curveControllerValue - 20)))
+            })
+        }
+    }
+
+    private func transformToNewCell(_ middle: CGPoint, xPoint: CGFloat) {
+        DispatchQueue.main.async {
+            UIView.animate(withDuration: 0.3, delay: 0, options: .curveLinear, animations: { () -> Void in
+                if self.previousSelectedIndex > self.selectedCVIndex {
+                    self.dotView.center = CGPoint(x: middle.x + xPoint, y: middle.y + self.bounds.height - 3)
+                } else {
+                    self.dotView.center = CGPoint(x: middle.x - xPoint, y: middle.y + self.bounds.height - 3)
+                }
+            }, completion: { [weak self] _ in
+                self?.transformToDotLocation(middle)
+            })
+        }
+    }
+
+    private func transformToDotLocation(_ middle: CGPoint) {
+        DispatchQueue.main.async {
+            UIView.animate(withDuration: 0.15, delay: 0, options: .curveLinear, animations: { () -> Void in
+                self.dotView.center = CGPoint(x: middle.x, y: middle.y + self.bounds.height - 12)
+            }, completion: { [weak self] _ in
+                self?.dotView.layer.animateForBounce()
+            })
+        }
+    }
+
+    /// This method animatedly hides curveContainerView and after completed shows new curve
+    private func hideCurveContainerView() {
+
+        let curveControllerValue = curveWidth / 2
+        let cvCellWidth = self.frame.width / CGFloat(titleNames.count)
+        let startXPoint = (Int(cvCellWidth) * selectedCVIndex) + (Int(cvCellWidth / 2) - curveControllerValue)
+        let endXPoint = (Int(cvCellWidth) * selectedCVIndex) + (Int(cvCellWidth / 2) + curveControllerValue)
+        // curve's mid point
+        let middle = CGPoint(x: startXPoint + ((endXPoint - startXPoint) / 2), y: 0)
+
+        //Right and left paddings when dot translate to bottom view
+        let dotRightPadding: CGFloat = (cvCellWidth / 2) + (CGFloat(curveControllerValue) - 3)
+        let dotLeftPadding: CGFloat = (cvCellWidth / 2) - (CGFloat(curveControllerValue) - 3)
+
+        DispatchQueue.main.async {
+
+        self.transformToBottom(to: middle,
+                               cellWidth: cvCellWidth,
+                               dotLeftPadding: dotLeftPadding,
+                               dotRightPadding: dotRightPadding,
+                               curveControllerValue: curveControllerValue)
+
+            UIView.animate(withDuration: 0.25, delay: 0.10, options: .curveLinear, animations: {  [weak self] in
                 self?.curveContainerView.center.y += 20
             }, completion: {[weak self] (_ : Bool) in
                 self?.curveContainerView.isHidden = true
@@ -248,33 +307,13 @@ public class WaveMenu: UIView {
 
     /// This method show curveContainerView with new curve
     private func showCurveContainerView() {
-        showDotView()
         DispatchQueue.main.async {
             self.curveContainerView.isHidden = false
-            UIView.animate(withDuration: 0.15, delay: 0, options: .curveLinear, animations: { [weak self] in
+            UIView.animate(withDuration: 0.25, delay: 0, options: .curveLinear, animations: { [weak self] in
                 /// resetting curve
-                self?.setCurve()
+                self?.setCurve(firstCall: false)
                 self?.curveContainerView.center.y -= 20
             }, completion: { [weak self] (_: Bool) in
-                self?.layoutIfNeeded()
-            })
-        }
-    }
-
-    /// This method hides dotView middle of the curve
-    private func hideDotView() {
-        DispatchQueue.main.async {
-            self.dotView.isHidden = true
-            self.layoutIfNeeded()
-        }
-    }
-
-    /// This method shows dotView middle of the curve
-    private func showDotView() {
-        DispatchQueue.main.async {
-            UIView.animate(withDuration: 0, delay: 0.14, options: .curveLinear, animations: {
-            }, completion: { [weak self] (_: Bool) in
-                self?.dotView.isHidden = false
                 self?.layoutIfNeeded()
             })
         }
@@ -284,11 +323,8 @@ public class WaveMenu: UIView {
     private func addDotView(to middle: CGPoint) {
         DispatchQueue.main.async {
             self.dotView.removeFromSuperview()
-            self.curveContainerView.addSubview(self.dotView)
-            if middle.x > 3 {
-                self.addConstraintsWithFormat("H:|-\(middle.x - 3)-[v0(6)]|", views: self.dotView)
-                self.addConstraintsWithFormat("V:|-6-[v0(6)]|", views: self.dotView)
-            }
+            self.addSubview(self.dotView)
+            self.dotView.frame = CGRect(x: middle.x - 3, y: middle.y + self.bounds.height - 12, width: 6, height: 6)
         }
     }
 }
