@@ -151,9 +151,11 @@ public class WaveMenu: UIView {
         addSubview(collectionView)
 
         // Collection view and curveContainer constraints
+        let cvCellWidth = self.frame.width / CGFloat(titleNames.count)
+        let padding = cvCellWidth / 2 - 15
         addConstraintsWithFormat("H:|[v0]|", views: collectionView)
         addConstraintsWithFormat("H:|[v0]|", views: curveContainerView)
-        addConstraintsWithFormat("H:|[v0]|", views: bottomView)
+        addConstraintsWithFormat("H:|-\(padding)-[v0]-\(padding)-|", views: bottomView)
         addConstraintsWithFormat("V:|[v0]-6-|", views: collectionView)
         addConstraintsWithFormat("V:[v0(20)]-6-|", views: curveContainerView)
         addConstraintsWithFormat("V:[v0(6)]|", views: bottomView)
