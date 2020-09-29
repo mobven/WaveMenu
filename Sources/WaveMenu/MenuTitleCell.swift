@@ -53,7 +53,7 @@ class WMTitleCell: UICollectionViewCell {
     /// Moves the deselected title to middle animatically
     private func setDeselectedTitle() {
         titleLabel.removeFromSuperview()
-        UIView.animate(withDuration: 0.2, delay: 0.1, options: .curveEaseIn, animations: { () -> Void in
+        UIView.animate(withDuration: 0.1, delay: 0.15, options: .curveEaseIn, animations: { () -> Void in
             self.initializeViews()
             self.layoutIfNeeded()
         }, completion: nil)
@@ -62,10 +62,12 @@ class WMTitleCell: UICollectionViewCell {
     /// Moves the selected title to top animatically
     private func setSelectedTitle() {
         addSubview(titleLabel)
-        UIView.animate(withDuration: 0.2, delay: 0.1, options: .curveEaseIn, animations: { () -> Void in
+        UIView.animate(withDuration: 0.1, delay: 0.5, options: .curveEaseIn, animations: { () -> Void in
             self.addConstraintsWithFormat("V:|-3-[v0(20)]", views: self.titleLabel)
             self.layoutIfNeeded()
-        }, completion: nil)
+        }, completion: { [weak self] _ in
+            self?.titleLabel.layer.animateForBounce()
+        })
     }
 
     /// This method adds titleLabel to cell

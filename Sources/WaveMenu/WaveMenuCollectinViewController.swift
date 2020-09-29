@@ -10,10 +10,10 @@ import UIKit
 
     // MARK: CollectionView Delegate - DataSource - FlowLayout
 
-    // swiftlint:disable:next line_length
-class WaveMenuCollectinViewController: NSObject, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
-    // swiftlint:disable:previous line_length
-
+class WaveMenuCollectinViewController: NSObject,
+                                       UICollectionViewDataSource,
+                                       UICollectionViewDelegate,
+                                       UICollectionViewDelegateFlowLayout {
     lazy var cellId = ""
     lazy var titleNames: [String] = []
     /// hold the collection view selected index for drawing bezire curve
@@ -34,10 +34,9 @@ class WaveMenuCollectinViewController: NSObject, UICollectionViewDataSource, UIC
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return titleNames.count
     }
-    // swiftlint:disable:next line_length
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-    // swiftlint:disable:previous line_length
 
+    func collectionView(_ collectionView: UICollectionView,
+                        cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         // swiftlint:disable:next force_cast
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath) as! WMTitleCell
         // swiftlint:disable:previous force_cast
@@ -48,15 +47,16 @@ class WaveMenuCollectinViewController: NSObject, UICollectionViewDataSource, UIC
         return cell
     }
 
-    // swiftlint:disable:next line_length
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: collectionView.frame.width / CGFloat(titleNames.count), height: collectionView.frame.height)
-    // swiftlint:disable:previous line_length
+    func collectionView(_ collectionView: UICollectionView,
+                        layout collectionViewLayout: UICollectionViewLayout,
+                        sizeForItemAt indexPath: IndexPath) -> CGSize {
+        return CGSize(width: collectionView.frame.width / CGFloat(titleNames.count),
+                      height: collectionView.frame.height)
     }
 
-    // swiftlint:disable:next line_length
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
-    // swiftlint:disable:previous line_length
+    func collectionView(_ collectionView: UICollectionView,
+                        layout collectionViewLayout: UICollectionViewLayout,
+                        minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
         return 0
     }
 
