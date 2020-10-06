@@ -171,9 +171,6 @@ public class WaveMenu: UIView {
                 self?.menuDelegate?.didChangeWaveMenuItem(newIndex: selectedIndex)
             }
         }
-        // Initial Selection
-        let selectedIndexPath = IndexPath(item: 0, section: 0)
-        collectionView.selectItem(at: selectedIndexPath, animated: false, scrollPosition: .bottom)
     }
 
     public override func draw(_ rect: CGRect) {
