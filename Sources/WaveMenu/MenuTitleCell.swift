@@ -63,7 +63,7 @@ class WMTitleCell: UICollectionViewCell {
     private func setSelectedTitle() {
         addSubview(titleLabel)
         UIView.animate(withDuration: 0.1, delay: 0.5, options: .curveEaseIn, animations: { () -> Void in
-            self.addConstraintsWithFormat("V:|-3-[v0(20)]", views: self.titleLabel)
+            self.addConstraintsWithFormat("V:|-3-[v0]", views: self.titleLabel)
             self.layoutIfNeeded()
         }, completion: { [weak self] _ in
             self?.titleLabel.layer.animateForBounce()
@@ -74,7 +74,7 @@ class WMTitleCell: UICollectionViewCell {
      private func initializeViews() {
         addSubview(titleLabel)
         addConstraintsWithFormat("H:[v0]", views: titleLabel)
-        addConstraintsWithFormat("V:[v0(20)]-20-|", views: titleLabel)
+        addConstraintsWithFormat("V:[v0]-20-|", views: titleLabel)
         addConstraint(NSLayoutConstraint(item: titleLabel,
                                          attribute: .centerX,
                                          relatedBy: .equal,
