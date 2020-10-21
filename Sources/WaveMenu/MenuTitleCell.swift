@@ -24,6 +24,7 @@ class WMTitleCell: UICollectionViewCell {
     // MARK: Initializers
     override init(frame: CGRect) {
         super.init(frame: frame)
+        self.backgroundColor = .clear
     }
 
     required init?(coder aDecoder: NSCoder) {
