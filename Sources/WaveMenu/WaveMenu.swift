@@ -42,7 +42,6 @@ public class WaveMenu: UIView {
     public var titleNames = ["Title 1", "Title 2", "Title 3"] {
         didSet {
             wmCollectionViewInstance.titleNames = titleNames
-            self.collectionView.reloadData()
             self.resetViews()
         }
     }
@@ -51,7 +50,6 @@ public class WaveMenu: UIView {
     public var titleFont: UIFont = UIFont.systemFont(ofSize: 14) {
         didSet {
             wmCollectionViewInstance.titleFont = titleFont
-            self.collectionView.reloadData()
             self.resetViews()
         }
     }
@@ -60,7 +58,6 @@ public class WaveMenu: UIView {
     @IBInspectable public var menuTitleTextColor: UIColor = .black {
         didSet {
             wmCollectionViewInstance.menuTitleTextColor = menuTitleTextColor
-            self.collectionView.reloadData()
             resetViews()
         }
     }
@@ -69,7 +66,6 @@ public class WaveMenu: UIView {
     @IBInspectable public var menuTitleSelectedTextColor: UIColor = .white {
         didSet {
             wmCollectionViewInstance.menuTitleSelectedTextColor = menuTitleSelectedTextColor
-            self.collectionView.reloadData()
             resetViews()
         }
     }
@@ -90,9 +86,7 @@ public class WaveMenu: UIView {
 
     /// This method reset collectionView and curve.
     private func resetViews() {
-        // Initial Selection
-        let selectedIndexPath = IndexPath(item: 0, section: 0)
-        self.collectionView.selectItem(at: selectedIndexPath, animated: false, scrollPosition: .bottom)
+        self.collectionView.reloadData()
         // resetting curve
         self.setCurve(firstCall: false)
         bottomView.backgroundColor = curveFillColor
