@@ -8,33 +8,33 @@
 
 import UIKit
 
-    // MARK: CollectionView Delegate - DataSource - FlowLayout
+// MARK: CollectionView Delegate - DataSource - FlowLayout
 
 class WaveMenuCollectinViewController: NSObject,
                                        UICollectionViewDataSource,
                                        UICollectionViewDelegate,
                                        UICollectionViewDelegateFlowLayout {
-    lazy var cellId = ""
-    lazy var titleNames: [String] = []
+    lazy var cellId = "waveCell"
+    lazy var titleNames: [String] = ["Title 1", "Title 2", "Title 3"]
     /// hold the collection view selected index for drawing bezire curve
     lazy var selectedCVIndex: Int = 0
     /// hold the collection view previous selected index for avoid reselection same cell
     lazy var previousSelectedIndex: Int = 0
-
+    
     lazy var titleFont: UIFont = UIFont.systemFont(ofSize: 14)
     lazy var menuTitleTextColor: UIColor = .black
     lazy var menuTitleSelectedTextColor: UIColor = .white
-
+    
     /// callback to return selectedCVIndex and previousSelectedIndex
     /// - parameter selectedIndex: collection view selected index.
     /// - parameter previousSelectedIndex: ollection view previous selected index.
     typealias CurveListener = (Int, Int) -> Void
     var curveListener: CurveListener?
-
+    
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return titleNames.count
     }
-
+    
     func collectionView(_ collectionView: UICollectionView,
                         cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         // swiftlint:disable:next force_cast
@@ -43,7 +43,7 @@ class WaveMenuCollectinViewController: NSObject,
         cell.titleLabel.font = self.titleFont
         cell.titleLabelTextColor = menuTitleTextColor
         cell.titleLabelSelectedTextColor = menuTitleSelectedTextColor
-        cell.initViews(title: titleNames[indexPath.item])
+        cell.configureCell(with: titleNames[indexPath.item])
         return cell
     }
 
@@ -59,7 +59,7 @@ class WaveMenuCollectinViewController: NSObject,
                         minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
         return 0
     }
-    
+
     func collectionView(_ collectionView: UICollectionView,
                         willDisplay cell: UICollectionViewCell,
                         forItemAt indexPath: IndexPath) {

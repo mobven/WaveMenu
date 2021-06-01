@@ -1,6 +1,6 @@
 //
 //  MenuTitleCell.swift
-//  WaveBar
+//  WaveMenu
 //
 //  Created by Ali Hasanoğlu on 21.07.2020.
 //  Copyright © 2020 Ali Hasanoğlu. All rights reserved.
@@ -33,7 +33,7 @@ class WMTitleCell: UICollectionViewCell {
 
     override public func draw(_ rect: CGRect) {
         super.draw(rect)
-        self.initializeViews()
+        self.addTitleLabel()
     }
 
     // MARK: cell selection changed
@@ -45,34 +45,35 @@ class WMTitleCell: UICollectionViewCell {
     }
 
     /// set title text and initial selection for title
-    func initViews(title: String) {
+    func configureCell(with title: String) {
         self.titleLabel.text = title
-        titleLabel.textColor = isSelected ? titleLabelSelectedTextColor : titleLabelTextColor
-        _ = isSelected ? setSelectedTitle() : setDeselectedTitle()
+        titleLabel.textColor = isSelected ? titleLabelSelectedTextColor: titleLabelTextColor
+        _ = isSelected ? setSelectedTitle(): setDeselectedTitle()
     }
 
     /// Moves the deselected title to middle animatically
     private func setDeselectedTitle() {
         titleLabel.removeFromSuperview()
-        UIView.animate(withDuration: 0.1, delay: 0.15, options: .curveEaseIn, animations: { () -> Void in
-            self.initializeViews()
-            self.layoutIfNeeded()
+        UIView.animate(withDuration: 0.1, delay: 0.15, options: .curveEaseIn, animations: { [weak self] in
+            self?.addTitleLabel()
+            self?.layoutIfNeeded()
         }, completion: nil)
     }
 
     /// Moves the selected title to top animatically
     private func setSelectedTitle() {
         addSubview(titleLabel)
-        UIView.animate(withDuration: 0.1, delay: 0.5, options: .curveEaseIn, animations: { () -> Void in
-            self.addConstraintsWithFormat("V:|-3-[v0]", views: self.titleLabel)
-            self.layoutIfNeeded()
+        UIView.animate(withDuration: 0.1, delay: 0.5, options: .curveEaseIn, animations: { [weak self] in
+            guard let label = self?.titleLabel else { return }
+            self?.addConstraintsWithFormat("V:|-3-[v0]", views: label)
+            self?.layoutIfNeeded()
         }, completion: { [weak self] _ in
             self?.titleLabel.layer.animateForBounce()
         })
     }
 
     /// This method adds titleLabel to cell
-     private func initializeViews() {
+    private func addTitleLabel() {
         addSubview(titleLabel)
         addConstraintsWithFormat("H:[v0]", views: titleLabel)
         addConstraintsWithFormat("V:[v0]-20-|", views: titleLabel)
