@@ -6,7 +6,7 @@ WaveMenu is an animated, custom menu view.
 
 ## Demo
 <p align="center">
-  <img alt="Custom Content" src="Docs/waveMenu.gif">
+  <img alt="Custom Content" src="Docs/wave.gif">
 </p>
 
 ## Requirements
@@ -26,12 +26,14 @@ WaveMenu can initialize from storyboard or programmatically. WaveMenu gives an i
 
 ### Supported Attributes
 
-- titleNames                  -> Displayed menu items.          (String Array)
-- curveWidth                  -> Curve's bottom width.          (Int)
-- titleFont                   -> Menu item's font.              (UIFont)
-- menuTitleTextColor          -> Menu item text color.          (UIColor)
-- menuTitleSelectedTextColor  -> Selected menu item text color. (UIColor)
-- curveFillColor              -> Curve's fill color             (UIColor)
+- titleNames                                   -> Displayed menu items.                              (String Array)
+- curveWidth                                  -> Curve's bottom width.                               (Int)
+- titleFont                                       -> Menu item's font.                                       (UIFont)
+- menuTitleTextColor                     -> Menu item text color.                                 (UIColor)
+- menuTitleSelectedTextColor       -> Selected menu item text color.                  (UIColor)
+- curveFillColor                              -> Curve's fill color                                         (UIColor)
+- curveDotColor                             -> DotView color                                            (UIColor)
+- bottomViewPaddaing                  -> BottomView leading and trailing pading   (CGFloat)
 
 ### Programmatically Initialize
 

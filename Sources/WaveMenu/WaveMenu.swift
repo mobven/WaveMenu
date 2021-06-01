@@ -1,6 +1,6 @@
 //
 //  WaveMenu.swift
-//  WaveBar
+//  WaveMenu
 //
 //  Created by Ali Hasanoğlu on 21.07.2020.
 //  Copyright © 2020 Ali Hasanoğlu. All rights reserved.
@@ -17,7 +17,7 @@ public protocol WaveMenuDelegate: AnyObject {
 
 public class WaveMenu: UIView {
 
-    private let cellId = "cellId"
+    private let cellId = "waveCell"
     private let caLayer: CAShapeLayer = CAShapeLayer()
 
     ///  collection view delegate and data source holder
@@ -26,23 +26,20 @@ public class WaveMenu: UIView {
     /// hold the collection view selected index for drawing bezire curve
     private lazy var selectedCVIndex: Int = 0
     /// hold the collection view previous selected index for avoid reselection same cell
-    private lazy var previousSelectedIndex: Int = 0
+    private lazy var previousSelectedCVIndex: Int = 0
 
     /// Thanks to menuDelegate, collectionView's selected index become accessible
-    ///
-    ///
     ///  Example: didChangeWaveMenuItem(newIndex: Int) method
-    ///
     public weak var menuDelegate: WaveMenuDelegate?
-
-    /// curve's bottom width. Initially 72
+    
+    /// Bezire curve's bottom width. Initially 72
     @IBInspectable open var curveWidth: Int = 72
 
-    /// WaveMenu titles. Initial value: ["Title 1", "Title 2", "Title 3"]
-    public var titleNames = ["Title 1", "Title 2", "Title 3"] {
+    /// WaveMenu titles. Initial values: ["Title 1", "Title 2", "Title 3"]
+    public var titleNames: [String] = ["Title 1", "Title 2", "Title 3"] {
         didSet {
             wmCollectionViewInstance.titleNames = titleNames
-            self.resetViews()
+            resetViews()
         }
     }
 
@@ -50,7 +47,7 @@ public class WaveMenu: UIView {
     public var titleFont: UIFont = UIFont.systemFont(ofSize: 14) {
         didSet {
             wmCollectionViewInstance.titleFont = titleFont
-            self.resetViews()
+            resetViews()
         }
     }
 
@@ -70,26 +67,39 @@ public class WaveMenu: UIView {
         }
     }
 
-    /// Curve fill color. Initial value: .white
+    /// Bezire curve fill color. Initial value: .white
     @IBInspectable public var curveFillColor: UIColor = .white {
         didSet {
-            self.resetViews()
+            resetViews()
         }
     }
 
-    /// Curve dotView color. Initial value: .red
+    /// Bezire curve dotView color. Initial value: .red
     @IBInspectable public var curveDotColor: UIColor = .red {
         didSet {
             dotView.backgroundColor = curveDotColor
         }
     }
 
+    /// Gives same leading and trailing margin to the bottomView
+    @IBInspectable public var bottomVievPadding: CGFloat = 0 {
+        didSet {
+            resetViews()
+        }
+    }
+
     /// This method reset collectionView and curve.
     private func resetViews() {
+        // Deleting all views from superview for
+        collectionView.removeFromSuperview()
+        curveContainerView.removeFromSuperview()
+        bottomView.removeFromSuperview()
+        // Reinitialize views
+        initializeViews()
+
         self.collectionView.reloadData()
         // resetting curve
         self.setCurve(firstCall: false)
-        bottomView.backgroundColor = curveFillColor
         self.clipsToBounds = true
     }
 
@@ -125,7 +135,6 @@ public class WaveMenu: UIView {
     override init(frame: CGRect) {
         super.init(frame: frame)
         initializeViews()
-
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -140,25 +149,25 @@ public class WaveMenu: UIView {
         collectionView.register(WMTitleCell.self, forCellWithReuseIdentifier: cellId)
 
         addSubview(curveContainerView)
-        addSubview(bottomView)
         addSubview(collectionView)
+        addSubview(bottomView)
+
+        bottomView.backgroundColor = curveFillColor
 
         // Collection view and curveContainer constraints
-        let cvCellWidth = self.frame.width / CGFloat(titleNames.count)
-        let padding = cvCellWidth / 2 - 15
         addConstraintsWithFormat("H:|[v0]|", views: collectionView)
         addConstraintsWithFormat("H:|[v0]|", views: curveContainerView)
-        addConstraintsWithFormat("H:|-\(padding)-[v0]-\(padding)-|", views: bottomView)
+        addConstraintsWithFormat("H:|-\(bottomVievPadding)-[v0]-\(bottomVievPadding)-|", views: bottomView)
         addConstraintsWithFormat("V:|[v0]-6-|", views: collectionView)
         addConstraintsWithFormat("V:[v0(20)]-6-|", views: curveContainerView)
         addConstraintsWithFormat("V:[v0(6)]|", views: bottomView)
 
         wmCollectionViewInstance.cellId = cellId
         wmCollectionViewInstance.selectedCVIndex = selectedCVIndex
-        wmCollectionViewInstance.previousSelectedIndex = previousSelectedIndex
+        wmCollectionViewInstance.previousSelectedIndex = previousSelectedCVIndex
         wmCollectionViewInstance.curveListener = { [weak self] selectedIndex, prevSelectedIndex in
             self?.selectedCVIndex = selectedIndex
-            self?.previousSelectedIndex = prevSelectedIndex
+            self?.previousSelectedCVIndex = prevSelectedIndex
             self?.hideCurveContainerView()
             if self?.menuDelegate != nil {
                 self?.menuDelegate?.didChangeWaveMenuItem(newIndex: selectedIndex)
@@ -220,44 +229,50 @@ public class WaveMenu: UIView {
         }
     }
 
-    private func transformToBottom(to middle: CGPoint,
-                                   cellWidth: CGFloat,
-                                   dotLeftPadding: CGFloat,
-                                   dotRightPadding: CGFloat,
-                                   curveControllerValue: Int) {
+    /// This method transforms dotView from deselected cell to bottomView.
+    private func transformDotViewToBottom(with middle: CGPoint,
+                                          cellWidth: CGFloat,
+                                          dotLeftPadding: CGFloat,
+                                          dotRightPadding: CGFloat,
+                                          curveControllerValue: Int) {
         DispatchQueue.main.async {
-            UIView.animate(withDuration: 0.15, delay: 0, options: .curveLinear, animations: { () -> Void in
-                if self.previousSelectedIndex > self.selectedCVIndex {
-                    self.dotView.center = CGPoint(x: (CGFloat(self.previousSelectedIndex) * cellWidth) + dotLeftPadding,
-                                                  y: middle.y + self.bounds.height - 3)
+            UIView.animate(withDuration: 0.15, delay: 0, options: .curveLinear, animations: {
+                if self.previousSelectedCVIndex > self.selectedCVIndex {
+                    self.dotView.center = CGPoint(
+                        x: (CGFloat(self.previousSelectedCVIndex) * cellWidth) + dotLeftPadding,
+                        y: middle.y + self.bounds.height - 3
+                    )
                 } else {
-                    self.dotView.center = CGPoint(x:
-                                                    (CGFloat(self.previousSelectedIndex) * cellWidth) + dotRightPadding,
-                                                  y: middle.y + self.bounds.height - 3)
+                    self.dotView.center = CGPoint(
+                        x: (CGFloat(self.previousSelectedCVIndex) * cellWidth) + dotRightPadding,
+                        y: middle.y + self.bounds.height - 3
+                    )
                 }
             }, completion: { [weak self] _ in
-                self?.transformToNewCell(middle, xPoint: CGFloat((curveControllerValue - 20)))
+                self?.transformDotViewToNewCell(with: middle, xPoint: CGFloat((curveControllerValue - 20)))
             })
         }
     }
 
-    private func transformToNewCell(_ middle: CGPoint, xPoint: CGFloat) {
+    /// This method transforms dotView on the bottomView from deselected cell to selected cell.
+    private func transformDotViewToNewCell(with middle: CGPoint, xPoint: CGFloat) {
         DispatchQueue.main.async {
-            UIView.animate(withDuration: 0.3, delay: 0, options: .curveLinear, animations: { () -> Void in
-                if self.previousSelectedIndex > self.selectedCVIndex {
+            UIView.animate(withDuration: 0.3, delay: 0, options: .curveLinear, animations: {
+                if self.previousSelectedCVIndex > self.selectedCVIndex {
                     self.dotView.center = CGPoint(x: middle.x + xPoint, y: middle.y + self.bounds.height - 3)
                 } else {
                     self.dotView.center = CGPoint(x: middle.x - xPoint, y: middle.y + self.bounds.height - 3)
                 }
             }, completion: { [weak self] _ in
-                self?.transformToDotLocation(middle)
+                self?.transformDotViewToNewLocation(with: middle)
             })
         }
     }
 
-    private func transformToDotLocation(_ middle: CGPoint) {
+    /// This method transforms dotView from bottomView to selected cell.
+    private func transformDotViewToNewLocation(with middle: CGPoint) {
         DispatchQueue.main.async {
-            UIView.animate(withDuration: 0.15, delay: 0, options: .curveLinear, animations: { () -> Void in
+            UIView.animate(withDuration: 0.15, delay: 0, options: .curveLinear, animations: {
                 self.dotView.center = CGPoint(x: middle.x, y: middle.y + self.bounds.height - 12)
             }, completion: { [weak self] _ in
                 self?.dotView.layer.animateForBounce()
@@ -280,16 +295,15 @@ public class WaveMenu: UIView {
         let dotLeftPadding: CGFloat = (cvCellWidth / 2) - (CGFloat(curveControllerValue) - 3)
 
         DispatchQueue.main.async {
-
-        self.transformToBottom(to: middle,
-                               cellWidth: cvCellWidth,
-                               dotLeftPadding: dotLeftPadding,
-                               dotRightPadding: dotRightPadding,
-                               curveControllerValue: curveControllerValue)
+            self.transformDotViewToBottom(with: middle,
+                                          cellWidth: cvCellWidth,
+                                          dotLeftPadding: dotLeftPadding,
+                                          dotRightPadding: dotRightPadding,
+                                          curveControllerValue: curveControllerValue)
 
             UIView.animate(withDuration: 0.25, delay: 0.10, options: .curveLinear, animations: {  [weak self] in
                 self?.curveContainerView.center.y += 20
-            }, completion: {[weak self] (_ : Bool) in
+            }, completion: { [weak self] _ in
                 self?.curveContainerView.isHidden = true
                 self?.layoutIfNeeded()
                 self?.showCurveContainerView()
@@ -305,7 +319,7 @@ public class WaveMenu: UIView {
                 /// resetting curve
                 self?.setCurve(firstCall: false)
                 self?.curveContainerView.center.y -= 20
-            }, completion: { [weak self] (_: Bool) in
+            }, completion: { [weak self] _ in
                 self?.layoutIfNeeded()
             })
         }
@@ -316,7 +330,10 @@ public class WaveMenu: UIView {
         DispatchQueue.main.async {
             self.dotView.removeFromSuperview()
             self.addSubview(self.dotView)
-            self.dotView.frame = CGRect(x: middle.x - 3, y: middle.y + self.bounds.height - 12, width: 6, height: 6)
+            self.dotView.frame = CGRect(x: middle.x - 3,
+                                        y: middle.y + self.bounds.height - 12,
+                                        width: 6,
+                                        height: 6)
         }
     }
 }
