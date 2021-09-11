@@ -34,6 +34,7 @@ WaveMenu can initialize from storyboard or programmatically. WaveMenu gives an i
 - curveFillColor                              -> Curve's fill color                                         (UIColor)
 - curveDotColor                             -> DotView color                                            (UIColor)
 - bottomViewPaddaing                  -> BottomView leading and trailing pading   (CGFloat)
+- programmaticallySelectedIndex -> Menu index that selected programmatically (Int)
 
 ### Programmatically Initialize
 
