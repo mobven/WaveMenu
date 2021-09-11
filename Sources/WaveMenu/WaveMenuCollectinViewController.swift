@@ -20,21 +20,23 @@ class WaveMenuCollectinViewController: NSObject,
     lazy var selectedCVIndex: Int = 0
     /// hold the collection view previous selected index for avoid reselection same cell
     lazy var previousSelectedIndex: Int = 0
-    
+    /// Can select menu item programmatically.
+    lazy var isSelectedProgrammatically = false
+
     lazy var titleFont: UIFont = UIFont.systemFont(ofSize: 14)
     lazy var menuTitleTextColor: UIColor = .black
     lazy var menuTitleSelectedTextColor: UIColor = .white
-    
+
     /// callback to return selectedCVIndex and previousSelectedIndex
     /// - parameter selectedIndex: collection view selected index.
     /// - parameter previousSelectedIndex: ollection view previous selected index.
     typealias CurveListener = (Int, Int) -> Void
     var curveListener: CurveListener?
-    
+
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return titleNames.count
     }
-    
+
     func collectionView(_ collectionView: UICollectionView,
                         cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         // swiftlint:disable:next force_cast
@@ -70,7 +72,11 @@ class WaveMenuCollectinViewController: NSObject,
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         previousSelectedIndex = selectedCVIndex
         selectedCVIndex = indexPath.row
-
+        let selectedIndexPath = IndexPath(item: selectedCVIndex, section: 0)
+        if self.isSelectedProgrammatically {
+            collectionView.selectItem(at: selectedIndexPath, animated: false, scrollPosition: [])
+            isSelectedProgrammatically = false
+        }
         // avoiding reselection the same cell
         if previousSelectedIndex != selectedCVIndex, curveListener != nil {
             self.curveListener!(selectedCVIndex, previousSelectedIndex)
