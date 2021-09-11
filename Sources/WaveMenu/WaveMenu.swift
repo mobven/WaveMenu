@@ -31,7 +31,7 @@ public class WaveMenu: UIView {
     /// Thanks to menuDelegate, collectionView's selected index become accessible
     ///  Example: didChangeWaveMenuItem(newIndex: Int) method
     public weak var menuDelegate: WaveMenuDelegate?
-    
+
     /// Bezire curve's bottom width. Initially 72
     @IBInspectable open var curveWidth: Int = 72
 
@@ -85,6 +85,16 @@ public class WaveMenu: UIView {
     @IBInspectable public var bottomVievPadding: CGFloat = 0 {
         didSet {
             resetViews()
+        }
+    }
+
+    /// Can set selected index of menu programmatically via this parameter.
+    public var programmaticallySelectedIndex: Int = 0 {
+        didSet {
+            let selectedIndexPath = IndexPath(item: programmaticallySelectedIndex, section: 0)
+            wmCollectionViewInstance.isSelectedProgrammatically = true
+            wmCollectionViewInstance.collectionView(collectionView, didSelectItemAt: selectedIndexPath)
+            setCurveListener()
         }
     }
 
@@ -165,6 +175,10 @@ public class WaveMenu: UIView {
         wmCollectionViewInstance.cellId = cellId
         wmCollectionViewInstance.selectedCVIndex = selectedCVIndex
         wmCollectionViewInstance.previousSelectedIndex = previousSelectedCVIndex
+        setCurveListener()
+    }
+
+    private func setCurveListener() {
         wmCollectionViewInstance.curveListener = { [weak self] selectedIndex, prevSelectedIndex in
             self?.selectedCVIndex = selectedIndex
             self?.previousSelectedCVIndex = prevSelectedIndex
