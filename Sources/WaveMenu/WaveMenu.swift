@@ -88,6 +88,41 @@ public class WaveMenu: UIView {
         }
     }
 
+    @IBInspectable public var titleLeadingSpace: NSNumber? = nil {
+        didSet {
+            wmCollectionViewInstance.titleLeadingSpace = titleLeadingSpace?.doubleValue
+            resetViews()
+        }
+    }
+
+    @IBInspectable public var titleTrailingSpace: NSNumber? = nil {
+        didSet {
+            wmCollectionViewInstance.titleTrailingSpace = titleTrailingSpace?.doubleValue
+            resetViews()
+        }
+    }
+
+    public var titleNumberOfLines: Int = 1 {
+        didSet {
+            wmCollectionViewInstance.titleNumberOfLines = titleNumberOfLines
+            resetViews()
+        }
+    }
+
+    public var titleLineBreakMode: NSLineBreakMode = .byTruncatingTail {
+        didSet {
+            wmCollectionViewInstance.titleLineBreakMode = titleLineBreakMode
+            resetViews()
+        }
+    }
+
+    public var titleTextAlignment: NSTextAlignment = .natural {
+        didSet {
+            wmCollectionViewInstance.titleTextAlignment = titleTextAlignment
+            resetViews()
+        }
+    }
+
     /// Can set selected index of menu programmatically via this parameter.
     public var programmaticallySelectedIndex: Int = 0 {
         didSet {

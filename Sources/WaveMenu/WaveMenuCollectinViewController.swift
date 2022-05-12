@@ -27,6 +27,12 @@ class WaveMenuCollectinViewController: NSObject,
     lazy var menuTitleTextColor: UIColor = .black
     lazy var menuTitleSelectedTextColor: UIColor = .white
 
+    var titleLeadingSpace: Double?
+    var titleTrailingSpace: Double?
+    var titleNumberOfLines: Int = 1
+    var titleLineBreakMode: NSLineBreakMode = .byTruncatingTail
+    var titleTextAlignment: NSTextAlignment = .natural
+
     /// callback to return selectedCVIndex and previousSelectedIndex
     /// - parameter selectedIndex: collection view selected index.
     /// - parameter previousSelectedIndex: ollection view previous selected index.
@@ -45,6 +51,11 @@ class WaveMenuCollectinViewController: NSObject,
         cell.titleLabel.font = self.titleFont
         cell.titleLabelTextColor = menuTitleTextColor
         cell.titleLabelSelectedTextColor = menuTitleSelectedTextColor
+        cell.titleLeadingSpace = titleLeadingSpace
+        cell.titleTrailingSpace = titleTrailingSpace
+        cell.titleNumberOfLines = titleNumberOfLines
+        cell.titleLineBreakMode = titleLineBreakMode
+        cell.titleTextAlignment = titleTextAlignment
         cell.configureCell(with: titleNames[indexPath.item])
         return cell
     }
